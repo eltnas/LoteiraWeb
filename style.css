@@ -78,15 +78,6 @@ body {
 #criaJogo #jogos .jogo-box button:hover {
   opacity: 0.5;
 }
-#criaJogo #jogos #mega h1 {
-  color: #008000;
-}
-#criaJogo #jogos #lotofacil h1 {
-  color: #800080;
-}
-#criaJogo #jogos #lotomania h1 {
-  color: #FFA500;
-}
 
 #num-jogo {
   width: 80%;
@@ -97,6 +88,7 @@ body {
   background-color: #FFFFFF;
   margin: 2rem auto;
   border-radius: 20px;
+  display: none;
   flex-direction: column;
   justify-content: space-around;
 }
@@ -106,10 +98,11 @@ body {
   height: 10rem;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 #num-jogo #num-gerado .ball {
-  margin: 2rem 2px;
+  margin: 0.7rem 2px;
   width: 3rem;
   height: 3rem;
   border-radius: 50%;

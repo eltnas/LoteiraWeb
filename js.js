@@ -1,13 +1,11 @@
-const btnMega = document.querySelector('#gera-mega');
-const btnLotofacil = document.querySelector('#gera-lotofacil');
-const btnLotomania = document.querySelector('#gera-lotomania');
-const btnLimpa = document.querySelector('#limparJogo');
-const numJogo = document.querySelector('#num-jogo');
+const btnMega = document.getElementById('gera-mega');
+const btnLotofacil = document.getElementById('gera-lotofacil');
+const btnLotomania = document.getElementById('gera-lotomania');
+const numJogo = document.getElementById('num-jogo');
 
 function gerarNum(qtd, max) {
     let num = [];
 
-    // Loop para gerar os numeros de acordo com o jogo
     while (num.length < qtd) {
         const gerar = Math.floor(Math.random() * max) + 1;
         if (!num.includes(gerar)) {
@@ -15,58 +13,73 @@ function gerarNum(qtd, max) {
         }
     }
 
-    // Loop para ordenar os numeros dentro do array
-    for (let i = 0; i < num.length - 1; i++) {
-        for (let j = 1; j < num.length - i; j++) {
-            if (num[j - 1] > num[j]) {
-                const temp = num[j - 1];
-                num[j - 1] = num[j];
-                num[j] = temp;
-            }
-        }
-    }
+
+
     return num;
 }
 
-function balls(value){
-    const numGerado = document.querySelector('#num-gerado');
-}
-function numGerado(wi, he){
-    let numGerado = document.createElement('div');
-    let limpaJogo = document.createElement('div');
-    numGerado.setAttribute('id', 'num-gerado');
-    numGerado.style.width = wi;
-    numGerado.style.height = he;
+function balls(value, jogo) {
+    let dez = [];
+    let numMax = 0;
+    const numGeradoContainer = document.createElement('div');
+    numGeradoContainer.setAttribute('id', 'num-gerado');
 
-    limpaJogo.setAttribute('id', 'limpar-jogo');
-
-    limpaJogo.innerHTML=`<button id="limparJogo">Limpar</button>`
-
-    numJogo.appendChild(numGerado);
-    numJogo.appendChild(limpaJogo);
-
-    console.log(numJogo, wi, he)
-}
-
-btnMega.addEventListener('click', ()=>{
-    let displayStyle = window.getComputedStyle(numJogo);
-
-    if(displayStyle.display == "none"){
-        numJogo.style.display = 'flex';
-        console.log(numGerado(300,200))
-    } else {
-        console.log("ja está flex!");
+    if (value === 6) numMax = 60
+    if (value === 15) numMax = 25
+    if (value === 50) numMax = 100
+    while (dez.length < value) {
+        const gerar = Math.floor(Math.random() * numMax) + 1;
+        if (!dez.includes(gerar)) {
+            dez.push(gerar);
+        }
     }
-})
 
-btnLotofacil.addEventListener('click', ()=>{
-    alert("Lotofacil");
-})
+    dez.sort((a, b) => a - b);
 
-btnLotomania.addEventListener('click', ()=>{
-    alert("Lotomania");
-})
+    for (let i = 0; i < value; i++) {
+        let ball = document.createElement('div');
+        ball.setAttribute('class', `ball ${jogo}`);
+        let num = document.createElement('h4');
+        num.textContent = dez[i];
+        ball.appendChild(num);
+        numGeradoContainer.appendChild(ball);
+    }
 
-btnLimpa.addEventListener('click', ()=>{
-    alert("limpa");
-})
+    return numGeradoContainer;
+}
+
+function numGerado(value, wi, he) {
+    numJogo.innerHTML = '';
+
+    const numGeradoContainer = balls(value, (value === 6 ? 'mega' : (value === 15 ? 'lotofacil' : 'lotomania')));
+    numGeradoContainer.style.width = `${wi}px`;
+    numGeradoContainer.style.height = `${he}px`;
+
+    const btnLimpaJogo = document.createElement('div');
+    btnLimpaJogo.setAttribute('id', 'limpar-jogo')
+    btnLimpaJogo.innerHTML = `<button id='limparJogo'>Limpar</button>`;
+
+
+    numJogo.appendChild(numGeradoContainer);
+    numJogo.appendChild(btnLimpaJogo);
+}
+
+btnMega.addEventListener('click', () => {
+    numJogo.style.display = "flex";
+    numGerado(6, 350, 200);
+});
+
+btnLotofacil.addEventListener('click', () => {
+    numJogo.style.display = "flex";
+    numGerado(15, 300, 350);
+});
+
+btnLotomania.addEventListener('click', () => {
+    numJogo.style.display = "flex";
+    numGerado(50, 550, 600);
+});
+
+btnLimpa.addEventListener('click', () => {
+    numJogo.innerHTML = '';
+    numJogo.style.display = 'none';
+});
